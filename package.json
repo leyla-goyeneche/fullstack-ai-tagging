@@ -1,0 +1,10 @@
+{
+  "name": "fullstack-ai-tagging",
+  "private": true,
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "dev:api": "npm -w @fullstack-ai-tagging/api run dev",
+    "build:api": "npm -w @fullstack-ai-tagging/api run build",
+    "test:api": "npm -w @fullstack-ai-tagging/api run test"
+  }
+}
