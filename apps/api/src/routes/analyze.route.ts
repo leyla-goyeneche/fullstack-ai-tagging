@@ -1,5 +1,5 @@
 import type { FastifyPluginAsync } from "fastify";
-import { inferTagsFromFilename } from "../services/tagging.service.js";
+import { inferTags } from "../services/tagging.service.js";
 
 export const analyzeRoute: FastifyPluginAsync = async (app) => {
   app.post("/api/analyze", async (request, reply) => {
@@ -30,7 +30,7 @@ export const analyzeRoute: FastifyPluginAsync = async (app) => {
       });
     }
 
-    const tags = inferTagsFromFilename(filename);
+    const tags = inferTags({ filename, mime: mimetype, size: buffer.length });
 
     return reply.send({
       tags,
