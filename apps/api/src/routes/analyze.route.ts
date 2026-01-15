@@ -3,6 +3,13 @@ import { inferTagsFromFilename } from "../services/tagging.service.js";
 
 export const analyzeRoute: FastifyPluginAsync = async (app) => {
   app.post("/api/analyze", async (request, reply) => {
+    if (!request.isMultipart()) {
+      return reply.status(400).send({
+        error: "BAD_REQUEST",
+        message: "Content-Type must be multipart/form-data",
+      });
+    }
+
     const file = await request.file();
 
     if (!file) {
@@ -13,12 +20,8 @@ export const analyzeRoute: FastifyPluginAsync = async (app) => {
     }
 
     const { filename, mimetype } = file;
-
-    // Lee el archivo completo a memoria (por ahora).
-    // Para archivos grandes, luego lo optimizamos con streaming.
     const buffer = await file.toBuffer();
 
-    // Validación básica de tipo
     const allowed = ["image/jpeg", "image/png", "image/webp"];
     if (!allowed.includes(mimetype)) {
       return reply.status(415).send({
